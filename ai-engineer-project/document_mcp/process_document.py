@@ -1,12 +1,17 @@
+import os.path
+
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
-from document_results import DocumentResult
+from document_mcp.document_results import DocumentResult
 import faiss
 import time
 import litellm
+import os
 
 def read_pdf() -> str:
-    reader = PdfReader('clean_code.pdf')
+    pdf_path = os.path.join(os.path.dirname(__file__), "clean_code.pdf")
+
+    reader = PdfReader(pdf_path)
     full_text = ""
 
     for page in reader.pages:
@@ -45,6 +50,7 @@ def search_chunks(question: str, db: faiss.IndexFlatL2, model: SentenceTransform
     return ". ".join(chunks[index] for index in search_result[1][0])
 
 def answer_question(question: str, context: str, retry_count: int = 3, base_delay: int = 1)-> DocumentResult:
+    ollama_base = os.environ.get("OLLAMA_API_BASE", "http://localhost:11434")
     for i in range(retry_count + 1):
         try:
             # Construct prompt using f-string formatting
@@ -56,6 +62,7 @@ def answer_question(question: str, context: str, retry_count: int = 3, base_dela
             )
 
             response = litellm.completion(
+                api_base=ollama_base,
                 model="ollama/llama3.2",
                 messages=[
                     {"role": "user", "content": prompt_content}

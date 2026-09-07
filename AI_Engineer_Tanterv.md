@@ -109,7 +109,9 @@ Követés: ez a fájl az élő progress tracker. Minden blokk végén frissítj�
 **Témák:** Docker konténerizáció, API kiszolgálás FastAPI/Flask-kal, inference skálázás, GPU erőforrás-menedzsment, monitoring/logging (LangFuse, OpenTelemetry), model serving vLLM-mel.
 **Mérföldkő:** a projekt Dockerizálva, FastAPI mögött fut, alap logging/monitoring bekötve.
 **Kész kritérium:** `docker run` egy paranccsal elindítja a teljes szolgáltatást, és van látható log/metrika kimenet.
-**Állapot:** ⬜ | **Dátum:** —
+**Állapot:** ✅ | **Dátum:** 2026-09-07
+
+*Megjegyzés:* A `document_mcp` RAG-logika (Blokk 9-es extra gyakorlat) FastAPI mögé kötve (`/ask` POST endpoint, Pydantic request model). Dockerizálva: `Dockerfile` + `.dockerignore`, `docker build` + `docker run -p 8000:8000` egy paranccsal elindítja. Valós hibák útközben: (1) csomagon belüli relatív importok (`from document_results import ...`) elromlanak, ha a modult csomagként (`document_mcp.api:app`) indítod — abszolút importra kellett váltani; (2) relatív fájl-útvonal (`clean_code.pdf`) a futtatás helyétől függött, `os.path.dirname(__file__)`-alapú abszolút útvonalra javítva; (3) konténerből a host gépen futó Ollama nem érhető el `localhost`-on — Docker Desktop `host.docker.internal` DNS-neve + `OLLAMA_API_BASE` env változó oldotta meg, hogy helyi és konténeres futtatás is működjön. Logging: `print` helyett `logging` modul, kérdésenként log a sikerességről, próbálkozás-számról és válaszidőről — konténerben is látható. Külön megbeszélve: Ollama-t nem a konténerbe sütjük bele (image-méret, egy-folyamat-per-konténer elv) — docker-compose-os, két-konténeres (app+ollama) verzió jövőbeli bővítési lehetőségként megjegyezve.
 
 ## Blokk 11 — Advanced AI Topics (1,5 hét)
 
@@ -161,3 +163,4 @@ Követés: ez a fájl az élő progress tracker. Minden blokk végén frissítj�
 - 2026-08-25 (extra, kurzuson kívüli gyakorlat): valós tankönyv-RAG (Clean Code PDF) végigvitele Blokk 2+8+9 mintáira építve, önállóan: PDF-kinyerés (pypdf), szavas chunkolás átfedéssel, embedding+FAISS index modul-szintű egyszeri build (nem minden hívásnál), top-k retrieval, retry+backoff LLM válaszgenerálás strukturált (`DocumentResult`) kimenettel, MCP tool-ba csomagolva docstringgel — végig működő, tesztelt pipeline (`document_mcp` mappa). 2026-07-08: a blokkonkénti hét-becslések irányadók, nem határidők. Gergő inkább lassabban, szilárd alapokkal halad — ha egy blokk nem érzi elég biztosnak, ott maradunk, amíg nem az. Minőség > tempó, főleg az alapozó blokkoknál.
 - 2026-07-23: Blokk 0-2 lezárva. Következő session: Blokk 3 (ML alapok) indítása.
 - 2026-08-10: Blokk 0-6 mind lezárva, Phase 1 Rolling Project kész → **Junior AI Engineer szint elérve**. Következő session: Blokk 7 (Claude Code / Engineering Workflows) indítása.
+- 2026-09-07: Blokk 10 lezárva (FastAPI + Docker + logging a document_mcp RAG-ra). Következő session Blokk 11-gyel (Advanced AI Topics: async, resiliency, context engineering) indul.
