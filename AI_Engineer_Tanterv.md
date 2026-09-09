@@ -118,7 +118,9 @@ Követés: ez a fájl az élő progress tracker. Minden blokk végén frissítj�
 **Témák:** aszinkron feldolgozás, resiliency (hibakezelés, retry, séma-validáció), context engineering, progressive disclosure, agent skills.
 **Mérföldkő:** a szolgáltatás átalakítva async-ra, séma-validáció bekötve (pl. Pydantic).
 **Kész kritérium:** terheléses mini-teszt mutatja az async előnyét a szinkron verzióhoz képest.
-**Állapot:** ⬜ | **Dátum:** —
+**Állapot:** ✅ | **Dátum:** 2026-09-09
+
+*Megjegyzés:* A document_mcp RAG-szolgáltatás async-ra alakítva: `litellm.acompletion` + `await`, retry-backoff `asyncio.sleep`-pel (nem blokkoló), végigvezetve `async_answer_question` → `async_answer_it` → FastAPI `/ask` és MCP tool láncon, a szinkron verzió is megtartva összehasonlításhoz (`/ask` sync, `/ask-async` async). Séma-validáció: Pydantic `Field(min_length=..., max_length=...)` a kérés- és válasz-modelleken (tanulság: kimeneti/generált mezőre nem érdemes felső hosszkorlátot tenni, mert valós adatot törhet el). Terheléses mini-teszt: `ThreadPoolExecutor` + `requests`, 5 egyidejű kérés — sync 8.74s, async 6.95s (~20% gyorsabb). Reális, tanulságos eredmény: a különbség valós, de nem drámai, mert a helyi Ollama backend maga is korlátozottan párhuzamosít — az async a saját FastAPI rétegen javít, nem varázsolja el a downstream szűk keresztmetszetet. Útközbeni hibák: Docker build extrém lelassulása (CUDA-s torch függőségek Linuxon) — megoldva `[tool.uv.sources]` + explicit `torch` direkt függőségként való felvételével (a forrás-átirányítás csak direkt függőségre hat); `ThreadPoolExecutor.submit(fn(arg))` vs `submit(fn, arg)` különbség (előbbi azonnal, szinkron hívja meg a függvényt a főszálon, ami hibás).
 
 ## Blokk 12 — AI Agents (2,5 hét)
 
@@ -164,3 +166,4 @@ Követés: ez a fájl az élő progress tracker. Minden blokk végén frissítj�
 - 2026-07-23: Blokk 0-2 lezárva. Következő session: Blokk 3 (ML alapok) indítása.
 - 2026-08-10: Blokk 0-6 mind lezárva, Phase 1 Rolling Project kész → **Junior AI Engineer szint elérve**. Következő session: Blokk 7 (Claude Code / Engineering Workflows) indítása.
 - 2026-09-07: Blokk 10 lezárva (FastAPI + Docker + logging a document_mcp RAG-ra). Következő session Blokk 11-gyel (Advanced AI Topics: async, resiliency, context engineering) indul.
+- 2026-09-09: Blokk 11 lezárva (async átalakítás, séma-validáció, terheléses mini-teszt). Ezzel az **AI Engineer szint** blokkjai (7-11) mind lezárva. Következő session Blokk 12-vel (AI Agents — agentic ReAct loop, multi-agent CrewAI) indul, ez a Phase 2 Rolling Project folytatása.

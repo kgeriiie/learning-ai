@@ -5,6 +5,7 @@ from sentence_transformers import SentenceTransformer
 from document_mcp.document_results import DocumentResult
 import faiss
 import time
+import asyncio
 import litellm
 import os
 
@@ -85,11 +86,54 @@ def answer_question(question: str, context: str, retry_count: int = 3, base_dela
             print(f"Attempt {i + 1} failed ({e}). Retrying in {delay} seconds...")
             time.sleep(delay)
 
+async def async_answer_question(question: str, context: str, retry_count: int = 3, base_delay: int = 1)-> DocumentResult:
+    ollama_base = os.environ.get("OLLAMA_API_BASE", "http://localhost:11434")
+    for i in range(retry_count + 1):
+        try:
+            # Construct prompt using f-string formatting
+            prompt_content = (
+                f"Answer this question: '{question}', use the following sentences as context: '{context}'. "
+                f"The answer will be in the sentences, do not say it is not there. "
+                f"Explain it in nutshell. "
+                f"Do not duplicate sentences."
+            )
+
+            response = await litellm.acompletion(
+                api_base=ollama_base,
+                model="ollama/llama3.2",
+                messages=[
+                    {"role": "user", "content": prompt_content}
+                ]
+            )
+
+            # Return answer immediately on success
+            answer = response["choices"][0]["message"]["content"]
+
+            return DocumentResult(answer=answer, success=True, attempts=i + 1)
+
+        except Exception as e:
+            # Handle failure on final attempt
+            if i == retry_count:
+                print(f"Error invoking model after {retry_count + 1} attempts:", e)
+                return DocumentResult(answer="", success=False, attempts=i + 1)
+
+            # Exponential backoff delay (e.g., 1s, 2s, 4s, 8s...)
+            delay = base_delay * (2 ** i)
+            print(f"Attempt {i + 1} failed ({e}). Retrying in {delay} seconds...")
+
+            await asyncio.sleep(delay)
+
 def answer_it(question: str) -> DocumentResult:
     print("start answering")
     context = search_chunks(question, db, model, chunks)
 
     return answer_question(question, context)
+
+async def async_answer_it(question: str) -> DocumentResult:
+    print("start answering")
+    context = search_chunks(question, db, model, chunks)
+
+    return await async_answer_question(question, context)
 
 full_text = read_pdf()
 words = split_text(full_text)
