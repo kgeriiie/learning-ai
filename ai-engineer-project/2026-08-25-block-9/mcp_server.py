@@ -26,7 +26,6 @@ def generate_answer(question) -> AnswerResult:
             many attempts it took.
         """
     
-    print("Esz a kérdés: ", question)
     return answer_it(question)
 
 
