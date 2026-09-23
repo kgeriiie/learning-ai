@@ -19,6 +19,7 @@ dependencies = [
     "scikit-learn>=1.9.0",
     "sentence-transformers>=5.6.0",
     "spacy>=3.8.14",
+    "tools>=1.0.35",
     "torch",
     "transformers<5",
     "uvicorn>=0.52.3",

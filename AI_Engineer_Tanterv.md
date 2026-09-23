@@ -138,7 +138,9 @@ Követés: ez a fájl az élő progress tracker. Minden blokk végén frissítj�
 **Témák:** reasoning vs. pattern completion, induktív/deduktív/abduktív módok, multi-hop reasoning, tool use a reasoning kiterjesztésére, kiértékelési módszerek (TruthfulQA, BBH, GSM8K).
 **Mérföldkő:** saját reasoning-kiértékelés futtatása az agentedre egy publikus benchmark alcsoportján.
 **Kész kritérium:** van számszerű reasoning-pontszámod és tudod értelmezni a hibás eseteket.
-**Állapot:** ⬜ | **Dátum:** —
+**Állapot:** ✅ | **Dátum:** 2026-09-23
+
+*Megjegyzés:* GSM8K (`openai/gsm8k`, `test` split, 10 kérdés) kiértékelés a Blokk 12-es ReAct agentre (qwen2.5:14b, `calculate`+`answer_it` tool-okkal). Nyers score: 70% (7/10). Hivatalos válasz kinyerése a `####` jelölés alapján, agent válasz kinyerése regex-szel ("utolsó szám a szövegben" heurisztika). Kritikus tanulság a 3 hibás eset elemzéséből: 2/3 nem valódi reasoning-hiba volt, hanem a kiértékelő módszer (naiv regex-extraction) hibázott — az agent szövege a helyes választ tartalmazta, csak egy másik szám követte a mondatban, amit a regex tévesen kapott el. Csak 1/3 volt valódi modell-hiba (önellentmondás: helyes részszámítások, de hibás végösszegzés). Korrigált, valós pontszám: 90% (9/10). Fő tanulság dokumentálva (`2026-09-23-block-13-reasoning/EREDMENYEK.md`): a kiértékelő harness saját korlátai könnyen összekeverednek a mért modell korlátaival — ez egy valós, gyakori csapda LLM-kiértékelésnél.
 
 ## Blokk 14 — From Code to Production (2,5 hét)
 
@@ -170,3 +172,4 @@ Követés: ez a fájl az élő progress tracker. Minden blokk végén frissítj�
 - 2026-09-07: Blokk 10 lezárva (FastAPI + Docker + logging a document_mcp RAG-ra). Következő session Blokk 11-gyel (Advanced AI Topics: async, resiliency, context engineering) indul.
 - 2026-09-09: Blokk 11 lezárva (async átalakítás, séma-validáció, terheléses mini-teszt). Ezzel az **AI Engineer szint** blokkjai (7-11) mind lezárva. Következő session Blokk 12-vel (AI Agents — agentic ReAct loop, multi-agent CrewAI) indul, ez a Phase 2 Rolling Project folytatása.
 - 2026-09-22: Blokk 12 lezárva (ReAct agent loop 2 eszközzel, CrewAI 3-agentes dev-csapat PoC). Ezzel a **Phase 2 Rolling Project lezárva, AI Engineer szint elérve** (a szint-térkép szerint blokk 7-11 volt AI Engineer, de a Phase 2 projekt ténylegesen blokk 12-vel zárul). Következő session Blokk 13-mal (Model Reasoning) indul, ez már a Senior/Architect szintű blokkok (12-16) második tagja.
+- 2026-09-23: Blokk 13 lezárva (GSM8K reasoning-kiértékelés, 90% korrigált pontosság, hibaelemzés dokumentálva). Következő session Blokk 14-gyel (From Code to Production — CI/CD, n8n, compliance) indul.
