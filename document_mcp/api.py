@@ -21,7 +21,7 @@ app = FastAPI()
 
 @app.get("/hello")
 def hello():
-    return {"message": "szia"}
+    return {"message": "szia uram kőő kóla?"}
 
 @app.post("/ask", response_model=AnswerResult)
 def ask(payload: Question):
