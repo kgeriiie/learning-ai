@@ -1,20 +1,20 @@
 # learning-ai
 
-Személyes tanulási repó: a GDE AI Engineer tanterv alapján haladok 0-ról architect szintig, blokkonként, mérhető kész-kritériumokkal. A haladás a [`AI_Engineer_Tanterv.md`](AI_Engineer_Tanterv.md) fájlban követhető.
+Personal learning repo: I'm working through the GDE AI Engineer syllabus from zero to architect level, block by block, with measurable completion criteria. Progress is tracked in [`AI_Engineer_Tanterv.md`](AI_Engineer_Tanterv.md) (written in Hungarian).
 
-## Mi van benne
+## What's inside
 
-Minden blokk kódja az `ai-engineer-project/` alatt van:
+All code lives under `ai-engineer-project/`:
 
-- **`document_mcp/`** – RAG szolgáltatás egy PDF-tankönyvre (pypdf → chunkolás → SentenceTransformer → FAISS → lokális Ollama LLM), FastAPI-val (`/ask`, `/ask-async`) és MCP szerverrel/klienssel.
-- **`agent/`** – ReAct agent függvényhívással (`calculate` és dokumentum-kereső eszköz).
-- **`crew/`** – háromágenses CrewAI fejlesztői csapat (proof of concept).
-- **`2026-09-23-block-13-reasoning/`** – GSM8K kiértékelés hibaelemzéssel (nyers 70%, korrigált 90%).
-- A többi dátumozott mappa a korábbi blokkok gyakorlatai.
+- **`document_mcp/`** – RAG service over a PDF textbook (pypdf → chunking → SentenceTransformer → FAISS → local Ollama LLM), exposed via FastAPI (`/ask`, `/ask-async`) and an MCP server/client.
+- **`agent/`** – ReAct agent with function calling (`calculate` and a document-search tool).
+- **`crew/`** – three-agent CrewAI dev team (proof of concept).
+- **`2026-09-23-block-13-reasoning/`** – GSM8K evaluation with error analysis (raw 70%, corrected 90%).
+- The other dated folders hold exercises from earlier blocks.
 
-## Futtatás
+## Running it
 
-Követelmények: Python 3.12, [uv](https://docs.astral.sh/uv/), helyben futó [Ollama](https://ollama.com) (`llama3.2`, `qwen2.5:14b`).
+Requirements: Python 3.12, [uv](https://docs.astral.sh/uv/), and a local [Ollama](https://ollama.com) with `llama3.2` and `qwen2.5:14b`.
 
 ```bash
 cd ai-engineer-project
@@ -22,7 +22,7 @@ uv sync
 uv run uvicorn document_mcp.api:app --reload
 ```
 
-A szolgáltatás a `document_mcp/clean_code.pdf` fájlt várja. Szerzői jogi okból **nem része a repónak**, ezt magadnak kell elhelyezned.
+The service expects `document_mcp/clean_code.pdf`. It is copyrighted and therefore **not part of this repo**; provide your own copy.
 
 ### Docker
 
@@ -31,6 +31,6 @@ docker build -t document-rag ai-engineer-project
 docker run -p 8000:8000 -e OLLAMA_API_BASE=http://host.docker.internal:11434 document-rag
 ```
 
-## Állapot
+## Status
 
-A 0–13. blokk kész. Folyamatban a 14. blokk: CI/CD, tárolóregiszter, rollback-terv, monitoring, compliance-checklist.
+Blocks 0–13 are done. Block 14 is in progress: CI/CD, container registry, rollback plan, monitoring, compliance checklist.
