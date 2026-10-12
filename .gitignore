@@ -221,7 +221,8 @@ __marimo__/
 
 # Copyrighted / personal / large files
 GDE_AI_Engineer_Syllabus.pdf
-ai-engineer-project/document_mcp/clean_code.pdf
-ai-engineer-project/2026-08-06-block-4/felvetel.m4a
-ai-engineer-project/2026-08-06-block-4/test.JPG
+document_mcp/clean_code.pdf
+2026-08-06-block-4/felvetel.m4a
+2026-08-06-block-4/test.JPG
 pre-rewrite-backup.bundle
+.DS_Store
