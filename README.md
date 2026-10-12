@@ -1,4 +1,5 @@
 # learning-ai
+<<<<<<< HEAD
 
 Personal learning repo: I'm working through the GDE AI Engineer syllabus from zero to architect level, block by block, with measurable completion criteria. Progress is tracked in [`AI_Engineer_Tanterv.md`](AI_Engineer_Tanterv.md) (written in Hungarian).
 
@@ -34,3 +35,6 @@ docker run -p 8000:8000 -e OLLAMA_API_BASE=http://host.docker.internal:11434 doc
 ## Status
 
 Blocks 0–13 are done. Block 14 is in progress: CI/CD, container registry, rollback plan, monitoring, compliance checklist.
+=======
+Ai learning project
+>>>>>>> 32b08e0d7cabde5befa861a378ad56606e6a2d23
